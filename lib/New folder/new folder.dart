@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Test extends StatelessWidget {
-
+class NewFolder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
