@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 
 class CharactersWebServices
 {
-  Dio dio;
+  late Dio dio;
 
   CharactersWebServices(){
     BaseOptions options =BaseOptions(

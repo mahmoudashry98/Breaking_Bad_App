@@ -1,15 +1,15 @@
 class Character
 {
-  int charId;
-  String name;
-  String nickname;
-  String image;
-  List<dynamic> jobs;
-  List<dynamic> appearanceOfSeasons;
-  String statusIfDeadOrAlive;
-  String actorName;
-  String categoryForTwoSeries;
-  List<dynamic>betterCallSoulAppearance;
+  late int charId;
+  late String name;
+  late String nickname;
+  late String image;
+  late List<dynamic> jobs;
+  late List<dynamic> appearanceOfSeasons;
+  late String statusIfDeadOrAlive;
+  late String actorName;
+  late String categoryForTwoSeries;
+  late List<dynamic>betterCallSoulAppearance;
 
   Character.fromJson (Map<String, dynamic> json)
   {

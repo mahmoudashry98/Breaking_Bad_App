@@ -9,7 +9,7 @@ class BreakingBadApp extends StatelessWidget {
 
   final AppRouter appRouter;
 
-  const BreakingBadApp({Key key, this.appRouter}) : super(key: key);
+  const BreakingBadApp({Key ?key, required this.appRouter}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
