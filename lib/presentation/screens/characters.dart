@@ -4,6 +4,7 @@ import 'package:breaking_bad/data/models/characters.dart';
 import 'package:breaking_bad/presentation/widgets/character_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_offline/flutter_offline.dart';
 
 class CharactersScreen extends StatefulWidget {
   @override
@@ -104,27 +105,69 @@ class _CharactersScreenState extends State<CharactersScreen> {
     );
   }
 
-  Widget _buildAppBarTitle(){
+  Widget _buildAppBarTitle() {
     return Text(
-        'Characters',
-        style: TextStyle(color: MyColor.myGrey),
-      );
-
+      'Characters',
+      style: TextStyle(color: MyColor.myGrey),
+    );
   }
 
+  Widget buildNotInternetWidget(){
+    return Center(
+      child: Container(
+        color:Colors.white,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              'Can\'t connect ... check your internet',
+              style: TextStyle(fontSize: 22,color: Colors.black87,),
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            Image.asset('assets/images/on_internet.png',fit: BoxFit.cover,)
+          ],
+        ),
+      ),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: MyColor.myYellow,
-        leading: _isSearching ? BackButton(color: MyColor.myGrey,): Container(),
-        title: _isSearching ? _buildSearchFiled() : _buildAppBarTitle(),
-        actions: _buildAppBarActions(),
-
-      ),
-      body: buildBlocWidget(),
+        appBar: AppBar(
+          backgroundColor: MyColor.myYellow,
+          leading: _isSearching
+              ? BackButton(
+                  color: MyColor.myGrey,
+                )
+              : Container(),
+          title: _isSearching ? _buildSearchFiled() : _buildAppBarTitle(),
+          actions: _buildAppBarActions(),
+        ),
+        body: OfflineBuilder(connectivityBuilder: (
+          BuildContext context,
+          ConnectivityResult connectivity,
+          Widget child,
+        ) {
+          final bool connected = connectivity != ConnectivityResult.none;
+          if (connected) {
+            return buildBlocWidget();
+          } else {
+            return buildNotInternetWidget();
+          }
+        },
+        child: Center(
+            child: CircularProgressIndicator(),
+        ),
+        ),
     );
   }
+
+
 
   Widget buildLoadedListWidgets() {
     return SingleChildScrollView(
@@ -148,10 +191,14 @@ class _CharactersScreenState extends State<CharactersScreen> {
       shrinkWrap: true,
       physics: const ClampingScrollPhysics(),
       padding: EdgeInsets.zero,
-      itemCount: _searchTextController.text.isEmpty ? allCharacters.length : searchForCharacters.length,
+      itemCount: _searchTextController.text.isEmpty
+          ? allCharacters.length
+          : searchForCharacters.length,
       itemBuilder: (context, index) {
         return CharacterItem(
-          character: _searchTextController.text.isEmpty? allCharacters[index] : searchForCharacters[index],
+          character: _searchTextController.text.isEmpty
+              ? allCharacters[index]
+              : searchForCharacters[index],
         );
       },
     );
